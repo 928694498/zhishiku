@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国际物流知识库管理系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚚 国际物流知识库管理系统</h1>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="channels">物流渠道</button>
+            <button class="tab-btn" data-tab="price-sheets">报价单管理</button>
+            <button class="tab-btn" data-tab="calculator">运费计算器</button>
+            <button class="tab-btn" data-tab="customers">客户管理</button>
+            <button class="tab-btn" data-tab="guides">操作指引</button>
+            <button class="tab-btn" data-tab="faq">知识问答</button>
+        </nav>
+
+        <main>
+            <section id="channels" class="tab-content active">
+                <div class="section-header">
+                    <h2>物流渠道管理</h2>
+                    <button class="btn btn-primary" onclick="showModal('channel-modal')">+ 添加渠道</button>
+                </div>
+                <div class="table-container">
+                    <table id="channels-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>渠道名称</th>
+                                <th>代码</th>
+                                <th>描述</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="price-sheets" class="tab-content">
+                <div class="section-header">
+                    <h2>报价单管理</h2>
+                    <button class="btn btn-primary" onclick="showModal('price-sheet-modal')">+ 添加报价单</button>
+                </div>
+                <div class="table-container">
+                    <table id="price-sheets-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>报价单名称</th>
+                                <th>渠道</th>
+                                <th>目的地</th>
+                                <th>体积重系数</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="calculator" class="tab-content">
+                <div class="section-header">
+                    <h2>运费计算器</h2>
+                </div>
+                <div class="calculator-container">
+                    <form id="calculator-form" class="form-grid">
+                        <div class="form-group">
+                            <label>选择报价单</label>
+                            <select id="calc-price-sheet" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>实际重量 (kg)</label>
+                            <input type="number" id="calc-weight" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>长度 (cm)</label>
+                            <input type="number" id="calc-length" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>宽度 (cm)</label>
+                            <input type="number" id="calc-width" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>高度 (cm)</label>
+                            <input type="number" id="calc-height" step="0.1" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <button type="submit" class="btn btn-primary btn-large">计算运费</button>
+                        </div>
+                    </form>
+                    <div id="calculation-result" class="result-card hidden"></div>
+                </div>
+            </section>
+
+            <section id="customers" class="tab-content">
+                <div class="section-header">
+                    <h2>客户管理</h2>
+                    <button class="btn btn-primary" onclick="showModal('customer-modal')">+ 添加客户</button>
+                </div>
+                <div class="table-container">
+                    <table id="customers-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>客户名称</th>
+                                <th>公司</th>
+                                <th>客户类型</th>
+                                <th>联系人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="guides" class="tab-content">
+                <div class="section-header">
+                    <h2>操作指引管理</h2>
+                    <button class="btn btn-primary" onclick="showModal('guide-modal')">+ 添加指引</button>
+                </div>
+                <div class="table-container">
+                    <table id="guides-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>渠道</th>
+                                <th>步骤标题</th>
+                                <th>顺序</th>
+                                <th>对接人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="faq" class="tab-content">
+                <div class="section-header">
+                    <h2>知识问答管理</h2>
+                    <button class="btn btn-primary" onclick="showModal('faq-modal')">+ 添加问答</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="faq-search" placeholder="搜索问答...">
+                </div>
+                <div class="table-container">
+                    <table id="faq-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>问题</th>
+                                <th>分类</th>
+                                <th>关键词</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="channel-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('channel-modal')">&times;</span>
+            <h2>添加物流渠道</h2>
+            <form id="channel-form">
+                <div class="form-group">
+                    <label>渠道名称 *</label>
+                    <input type="text" id="channel-name" required>
+                </div>
+                <div class="form-group">
+                    <label>渠道代码</label>
+                    <input type="text" id="channel-code">
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    <textarea id="channel-description" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="price-sheet-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('price-sheet-modal')">&times;</span>
+            <h2>添加报价单</h2>
+            <form id="price-sheet-form">
+                <div class="form-group">
+                    <label>选择渠道 *</label>
+                    <select id="ps-channel" required></select>
+                </div>
+                <div class="form-group">
+                    <label>报价单名称 *</label>
+                    <input type="text" id="ps-name" required>
+                </div>
+                <div class="form-group">
+                    <label>目的地国家</label>
+                    <input type="text" id="ps-destination">
+                </div>
+                <div class="form-group">
+                    <label>体积重系数</label>
+                    <input type="number" id="ps-volume-factor" value="5000" step="1">
+                </div>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="customer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('customer-modal')">&times;</span>
+            <h2>添加客户</h2>
+            <form id="customer-form">
+                <div class="form-group">
+                    <label>客户名称 *</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label>公司</label>
+                    <input type="text" id="customer-company">
+                </div>
+                <div class="form-group">
+                    <label>客户类型</label>
+                    <select id="customer-type">
+                        <option value="普通">普通</option>
+                        <option value="VIP">VIP</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>联系人</label>
+                    <input type="text" id="customer-contact">
+                </div>
+                <div class="form-group">
+                    <label>联系电话</label>
+                    <input type="text" id="customer-phone">
+                </div>
+                <div class="form-group">
+                    <label>联系邮箱</label>
+                    <input type="email" id="customer-email">
+                </div>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="guide-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('guide-modal')">&times;</span>
+            <h2>添加操作指引</h2>
+            <form id="guide-form">
+                <div class="form-group">
+                    <label>选择渠道 *</label>
+                    <select id="guide-channel" required></select>
+                </div>
+                <div class="form-group">
+                    <label>步骤标题 *</label>
+                    <input type="text" id="guide-title" required>
+                </div>
+                <div class="form-group">
+                    <label>步骤顺序 *</label>
+                    <input type="number" id="guide-order" required>
+                </div>
+                <div class="form-group">
+                    <label>操作内容 *</label>
+                    <textarea id="guide-content" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>对接人</label>
+                    <input type="text" id="guide-contact-person">
+                </div>
+                <div class="form-group">
+                    <label>联系方式</label>
+                    <input type="text" id="guide-contact-info">
+                </div>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="faq-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('faq-modal')">&times;</span>
+            <h2>添加知识问答</h2>
+            <form id="faq-form">
+                <div class="form-group">
+                    <label>问题 *</label>
+                    <input type="text" id="faq-question" required>
+                </div>
+                <div class="form-group">
+                    <label>回答 *</label>
+                    <textarea id="faq-answer" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>分类</label>
+                    <input type="text" id="faq-category" placeholder="例如：计费规则、时效查询">
+                </div>
+                <div class="form-group">
+                    <label>关键词</label>
+                    <input type="text" id="faq-keywords" placeholder="多个关键词用逗号分隔">
+                </div>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
