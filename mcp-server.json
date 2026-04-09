@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "logistics-knowledge-base": {
+      "command": "node",
+      "args": ["src/mcp-server.js"]
+    }
+  }
+}
